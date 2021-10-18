@@ -6,9 +6,9 @@ module.exports = {
   entry: path.join(__dirname, 'src/packages/home', 'index.tsx'),
   resolve: {
     alias: {
-      '@src': path.resolve(__dirname, '../src'),
-      '@packages': path.resolve(__dirname, '../src/packages'),
-      '@containers': path.resolve(__dirname, '../src/containers'),
+      '@src': path.resolve(__dirname, 'src'),
+      '@packages': path.resolve(__dirname, 'src/packages'),
+      '@containers': path.resolve(__dirname, 'src/containers'),
     },
     mainFiles: ['index', 'main'],
     extensions: ['.ts', '.tsx', '.scss', 'json', '.js'],
