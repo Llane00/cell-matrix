@@ -1,6 +1,7 @@
 import React from "react";
 import Background from "./assets/background_1.jpeg";
 import { Stage, Sprite } from '@inlet/react-pixi';
+import './styles/index.scss'
 
 const App: React.FC = () => {
   return (

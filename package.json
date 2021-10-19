@@ -2,10 +2,10 @@
   "name": "cell-matrix",
   "version": "0.0.1",
   "description": "a game about cell matrix",
-  "main": "index.js",
+  "main": "/src/packages/home/app.tsx",
   "scripts": {
-    "build": "webpack",
-    "dev": "webpack-dev-server"
+    "dev": "webpack serve --config ./scripts/webpack.dev.js",
+    "build": "webpack --config ./scripts/webpack.base.js"
   },
   "repository": {
     "type": "git",
@@ -28,10 +28,13 @@
     "@types/react-dom": "^17.0.9",
     "autoprefixer": "^10.3.7",
     "babel-loader": "^8.2.2",
+    "css-loader": "^6.4.0",
     "cssnano": "^5.0.8",
     "html-webpack-plugin": "^5.4.0",
+    "mini-css-extract-plugin": "^2.4.2",
     "postcss": "^8.3.9",
     "postcss-loader": "^6.2.0",
+    "prop-types": "^15.7.2",
     "resolve-url-loader": "^4.0.0",
     "sass": "^1.43.2",
     "sass-loader": "^12.2.0",
