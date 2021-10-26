@@ -5,7 +5,7 @@ import Map from "./components/Map"
 import { Hero, heroInfo as defaultHeroInfo } from "./components/Hero"
 import { Enemy, enemyInfo } from "./components/Enemy";
 
-import { hitTestObject } from "../utils/index"
+import { hitTestObject, isBeyoundScreen, isTouchBottomScreenBorder, isTouchLeftScreenBorder, isTouchRightScreenBorder, isTouchTopScreenBorder } from "../utils/index"
 import { AppContext } from "../context/appContext";
 import { viewWidth, viewHeight } from "../configs";
 
@@ -21,11 +21,20 @@ const GamePage: React.FC = () => {
     update(delta)
 
     enemyList.current.forEach((enemyInfo, enemyIndex) => {
-      //敌人移动
-      setEnemyList(enemyIndex, 'y', enemyInfo.y + enemyInfo.speed)
-      //敌机碰撞检测
-      if (hitTestObject(enemyInfo, heroInfo.current)) {
-        setPageName("EndPage")
+      //移除超出屏幕的敌人
+      if (enemyList.current?.length > 0) {
+        enemyList.current = enemyList.current.filter((item) => {
+          return !isBeyoundScreen(item)
+        }) 
+      }
+      
+      if (enemyList.current?.length > 0) {
+        //敌人移动
+        setEnemyList(enemyIndex, 'y', enemyInfo.y + enemyInfo.speed)
+        //敌机碰撞检测
+        if (hitTestObject(enemyInfo, heroInfo.current)) {
+          setPageName("EndPage")
+        }
       }
     })
   }
@@ -70,16 +79,28 @@ function useHeroPlane() {
   const handleKeyEvent = (e: KeyboardEvent) => {
     switch (e.code) {
       case "ArrowUp":
-        heroInfo.current.y -= speed;
+        heroInfo.current.y -= speed
+        isTouchTopScreenBorder(heroInfo.current) ?
+          heroInfo.current.y = 0 :
+          null
         break;
       case "ArrowDown":
-        heroInfo.current.y += speed;
+        heroInfo.current.y += speed
+        isTouchBottomScreenBorder(heroInfo.current) ?
+          heroInfo.current.y = viewHeight - heroInfo.current.height :  
+          null
         break;
       case "ArrowLeft":
-        heroInfo.current.x -= speed;
+        heroInfo.current.x -= speed
+        isTouchLeftScreenBorder(heroInfo.current) ?
+          heroInfo.current.x = 0 :
+          null
         break;
       case "ArrowRight":
-        heroInfo.current.x += speed;
+        heroInfo.current.x += speed
+        isTouchRightScreenBorder(heroInfo.current) ?
+          heroInfo.current.x = viewWidth - heroInfo.current.width :
+          null
       default:
         break;
     }
@@ -120,7 +141,7 @@ function useEnemyPlane() {
 
   const setEnemyList = (index: number, key: string, value: string | number | object) => {
     const result = enemyList.current.map((item: enemyInfoType, _index: number) => {
-      return (_index == index) ? {
+      return (_index === index) ? {
         ...item,
         [key]: value
       } : item

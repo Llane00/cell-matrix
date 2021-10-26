@@ -1,4 +1,6 @@
-type planeObject = {
+import { viewHeight, viewWidth } from "../configs";
+
+type objectType = {
   x: number,
   y: number,
   width: number,
@@ -6,11 +8,40 @@ type planeObject = {
   centerX?: number,
   centerY?: number,
   halfWidth?: number,
-  halfHeight?: number
+  halfHeight?: number,
+  speed?: number
+}
+
+//是否超出屏幕了
+export const isBeyoundScreen = (obj:objectType) => {
+  // obj.x, obj.y
+  // obj.x + obj.width, obj.y
+  // obj.x, obj.y + obj.height
+  // obj.x + obj.width, obj.y + obj.height
+  return (obj.y + obj.height < 0 ||
+    obj.y > viewHeight ||
+    obj.x > viewWidth ||
+    obj.x + obj.width < 0)
+}
+
+export const isTouchLeftScreenBorder = (obj: objectType) => {
+  return obj.x <= 0
+}
+
+export const isTouchTopScreenBorder = (obj: objectType) => {
+  return obj.y <= 0
+}
+
+export const isTouchRightScreenBorder = (obj: objectType) => {
+  return obj.x + obj.width >= viewWidth
+}
+
+export const isTouchBottomScreenBorder = (obj: objectType) => {
+  return obj.y + obj.height >= viewHeight
 }
 
 //碰撞检测
-const hitTestObject = (r1:planeObject, r2:planeObject) => {
+export const hitTestObject = (r1:objectType, r2:objectType) => {
   //Define the variables we'll need to calculate
   let hit, combinedHalfWidths, combinedHalfHeights, vx, vy;
 
@@ -43,7 +74,3 @@ const hitTestObject = (r1:planeObject, r2:planeObject) => {
 
   return hit;
 };
-
-export {
-  hitTestObject,
-}
