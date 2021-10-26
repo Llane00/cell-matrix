@@ -1,12 +1,13 @@
 import { Container, useApp } from "@inlet/react-pixi";
 import React, { useContext, useEffect, useRef, useState } from "react"
 
-import Map from './components/Map'
-import { Hero, heroInfo as defaultHeroInfo } from './components/Hero'
+import Map from "./components/Map"
+import { Hero, heroInfo as defaultHeroInfo } from "./components/Hero"
 import { Enemy, enemyInfo } from "./components/Enemy";
 
-import { hitTestObject } from '../utils/index'
+import { hitTestObject } from "../utils/index"
 import { AppContext } from "../context/appContext";
+import { viewWidth, viewHeight } from "../configs";
 
 const GamePage: React.FC = () => {
   const { ticker } = useApp()
@@ -60,8 +61,8 @@ const GamePage: React.FC = () => {
 function useHeroPlane() {
   const speed = defaultHeroInfo.speed;
   const heroInfo = useRef({
-    x: 100,
-    y: 700,
+    x: viewWidth / 2 - defaultHeroInfo.width / 2,
+    y: viewHeight - defaultHeroInfo.height - 20,
     width: defaultHeroInfo.width,
     height: defaultHeroInfo.height,
   });

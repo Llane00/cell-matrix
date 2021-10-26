@@ -16,7 +16,7 @@ const Map: React.FC = () => {
     const tick = (delta: number) => {
       setMapY1(i => i + speed)
       setMapY1(i => {
-        if (i >= viewHeight-speed) {
+        if (i >= viewHeight - speed) {
           return -viewHeight;
         } else {
           return i
@@ -24,7 +24,7 @@ const Map: React.FC = () => {
       })
       setMapY2(i => i + speed)
       setMapY2(i => {
-        if (i >= viewHeight -speed) {
+        if (i >= viewHeight - speed) {
           return -viewHeight;
         } else {
           return i
@@ -34,7 +34,7 @@ const Map: React.FC = () => {
     ticker.add(tick)
     return () => ticker.remove(tick)
   }, [ticker])
-  
+
   return (
     <Container>
       <Sprite

@@ -2,7 +2,7 @@ import { Container, Sprite } from "@inlet/react-pixi"
 import React, { useContext } from "react"
 import { AppContext } from "../context/appContext"
 
-import EndImg from '../assets/end.png';
+import EndImg from "../assets/end.png";
 
 const EndPage: React.FC = () => {
   const { setPageName } = useContext(AppContext)

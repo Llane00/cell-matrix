@@ -5,8 +5,8 @@ import { StartPage } from "./StartPage";
 import { GamePage } from "./GamePage";
 import { EndPage } from "./EndPage";
 import ContextBridge from "../context/contextBridge";
+import { viewHeight, viewWidth } from "../configs";
 
-// import { Stage } from "../game";
 
 const CurrentPage: React.FC = ({ children, ...props }) => {
   const { pageName } = useContext(AppContext)
@@ -16,8 +16,8 @@ const CurrentPage: React.FC = ({ children, ...props }) => {
       Context={AppContext}
       render={(children) => (
         <Stage
-          width={375}
-          height={812}
+          width={viewWidth}
+          height={viewHeight}
           options={{
             transparent: false, // 背景透明
             resolution: 2, // 渲染倍数，避免模糊
