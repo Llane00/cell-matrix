@@ -1,15 +1,15 @@
-import React from "react";
+import React from "react"
 import { Container, Sprite } from "@inlet/react-pixi"
-import heroImg from "../../assets/hero.png"
+import enemyImg from '../../assets/enemy_0.png'
 
 interface props {
   x: number,
   y: number
 }
 
-const Hero: React.FC<props> = (props) => {
-  const width = 430/4;
-  const height = 464/4;
+const Enemy: React.FC<props> = (props) => {
+  const width = 102.5 / 2;
+  const height = 104 / 2;
 
   return (
     <Container
@@ -19,11 +19,10 @@ const Hero: React.FC<props> = (props) => {
       <Sprite
         width={width}
         height={height}
-        image={heroImg}
-      >
-      </Sprite>
+        image={enemyImg}
+      ></Sprite>
     </Container>
-  )  
+  )
 }
 
-export default Hero;
+export default Enemy;
