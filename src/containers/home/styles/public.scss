@@ -1,9 +1,13 @@
 $font-stack:    Helvetica, sans-serif;
 $primary-color: #333;
 
-body {
+* {
   margin: 0;
   padding: 0;
-  font: 100% $font-stack;
+  font: $font-stack;
   color: $primary-color;
+}
+
+body {
+  overflow: hidden;
 }
