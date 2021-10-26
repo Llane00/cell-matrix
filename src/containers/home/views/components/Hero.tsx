@@ -6,24 +6,24 @@ interface props {
   x: number,
   y: number
 }
+export const heroInfo = {
+  width: 107.5,
+  height: 116,
+  speed: 25,
+}
 
-const Hero: React.FC<props> = (props) => {
-  const width = 430/4;
-  const height = 464/4;
-
+export const Hero: React.FC<props> = (props) => {
   return (
     <Container
       x={props.x}
       y={props.y}
     >
       <Sprite
-        width={width}
-        height={height}
+        width={heroInfo.width}
+        height={heroInfo.height}
         image={heroImg}
       >
       </Sprite>
     </Container>
   )  
 }
-
-export default Hero;
