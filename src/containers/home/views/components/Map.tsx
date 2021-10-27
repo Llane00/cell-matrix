@@ -2,7 +2,7 @@ import { Container, Sprite, useApp } from "@inlet/react-pixi";
 import React, { useEffect, useState } from "react"
 
 import { viewWidth, viewHeight, backgroundSpeed } from "../../configs/index"
-import Background from "../../assets/background_1.jpeg";
+import Background from "../../assets/background_1.png";
 
 type Callback = () => void;
 const Map: React.FC = () => {

@@ -82,6 +82,7 @@ const GamePage: React.FC = () => {
         y={heroInfo.current.y}
         onAttack={() => {
           addBullet({
+            type: 'laser',
             x: heroInfo.current.x + heroInfo.current.width / 2,
             y: heroInfo.current.y
           })
@@ -101,6 +102,7 @@ const GamePage: React.FC = () => {
           (bulletItem) =>
           (
             <Bullet
+              type={bulletItem.type}
               x={bulletItem?.x}
               y={bulletItem?.y}
               key={bulletItem?.id} />
@@ -165,6 +167,7 @@ function useHeroPlane() {
 function useBullet() {
   type bulletInfoType = {
     id: number,
+    type: string,
     x: number,
     y: number,
     width: number,
@@ -174,13 +177,14 @@ function useBullet() {
 
   const bulletList = useRef<bulletInfoType[]>([])
 
-  const addBullet = (info: { x: number, y: number }) => {
+  const addBullet = (info: { type: string, x: number, y: number }) => {
     const uniqueId = Math.floor(Date.now() * Math.random());
     bulletList.current.push({
-      ...bulletInfo,
-      x: info.x - bulletInfo.width / 2,
+      ...bulletInfo[info.type],
+      x: info.x - bulletInfo[info.type].width / 2,
       y: info.y,
-      id: uniqueId
+      id: uniqueId,
+      type: info.type
     })
   }
 
