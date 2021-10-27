@@ -12,6 +12,9 @@ import { viewWidth, viewHeight } from "../configs";
 
 const GamePage: React.FC = () => {
   const { ticker } = useApp()
+  ticker.minFPS = 60;
+  ticker.maxFPS = 90;
+
   const update = useState(0)[1]
 
   const { setPageName } = useContext(AppContext)
@@ -205,11 +208,11 @@ function useEnemyPlane() {
     speed: number
   }
 
-  //创建敌方飞机
-  const enemyList = useRef([
+  //敌方飞机
+  const enemyList = useRef<enemyInfoType[]>([
     {
       ...enemyInfo,
-      id: 2,
+      id: 1,
       x: 200,
       y: 50,
     },
