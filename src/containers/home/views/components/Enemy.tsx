@@ -27,5 +27,3 @@ export const Enemy: React.FC<props> = (props) => {
     </Container>
   )
 }
-
-export default Enemy;

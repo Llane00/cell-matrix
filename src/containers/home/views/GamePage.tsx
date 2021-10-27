@@ -4,6 +4,7 @@ import React, { useContext, useEffect, useRef, useState } from "react"
 import Map from "./components/Map"
 import { Hero, heroInfo as defaultHeroInfo } from "./components/Hero"
 import { Enemy, enemyInfo } from "./components/Enemy";
+import { Bullet, bulletInfo } from "./components/Bullet";
 
 import { hitTestObject, isBeyoundScreen, isTouchBottomScreenBorder, isTouchLeftScreenBorder, isTouchRightScreenBorder, isTouchTopScreenBorder } from "../utils/index"
 import { AppContext } from "../context/appContext";
@@ -16,6 +17,7 @@ const GamePage: React.FC = () => {
   const { setPageName } = useContext(AppContext)
   const { heroInfo } = useHeroPlane()
   const { enemyList, setEnemyList } = useEnemyPlane();
+  const { bulletList, setBulletList, addBullet } = useBullet();
 
   const mainGameTick = (delta: number) => {
     update(delta)
@@ -25,9 +27,9 @@ const GamePage: React.FC = () => {
       if (enemyList.current?.length > 0) {
         enemyList.current = enemyList.current.filter((item) => {
           return !isBeyoundScreen(item)
-        }) 
+        })
       }
-      
+
       if (enemyList.current?.length > 0) {
         //敌人移动
         setEnemyList(enemyIndex, 'y', enemyInfo.y + enemyInfo.speed)
@@ -37,6 +39,28 @@ const GamePage: React.FC = () => {
         }
       }
     })
+
+    //我方子弹移动
+    bulletList.current.map((bulletItem, bulletIndex) => {
+      setBulletList(bulletIndex, 'y', bulletItem.y - bulletItem.speed)
+
+      //移除超出屏幕的子弹
+      if (isBeyoundScreen(bulletItem)) {
+        bulletList.current.splice(bulletIndex, 1)
+      }
+    })
+
+    //我方子弹碰撞检测
+    bulletList.current.forEach((bulletInfo, bulletIndex) => {
+      enemyList.current.forEach((enemyInfo, enemyIndex) => {
+        if (hitTestObject(bulletInfo, enemyInfo)) {
+          //子弹消失
+          bulletList.current.splice(bulletIndex, 1);
+          //敌机消失
+          enemyList.current.splice(enemyIndex, 1);
+        }
+      });
+    });
   }
 
   //游戏页渲染
@@ -53,6 +77,12 @@ const GamePage: React.FC = () => {
       <Hero
         x={heroInfo.current.x}
         y={heroInfo.current.y}
+        onAttack={() => {
+          addBullet({
+            x: heroInfo.current.x + heroInfo.current.width / 2,
+            y: heroInfo.current.y
+          })
+        }}
       />
       {enemyList.current.map(
         (enemyInfo) =>
@@ -63,6 +93,17 @@ const GamePage: React.FC = () => {
             key={enemyInfo.id} />
         )
       )}
+      {
+        bulletList.current?.map(
+          (bulletItem) =>
+          (
+            <Bullet
+              x={bulletItem?.x}
+              y={bulletItem?.y}
+              key={bulletItem?.id} />
+          )
+        )
+      }
     </Container>
   )
 }
@@ -75,7 +116,6 @@ function useHeroPlane() {
     width: defaultHeroInfo.width,
     height: defaultHeroInfo.height,
   });
-
   const handleKeyEvent = (e: KeyboardEvent) => {
     switch (e.code) {
       case "ArrowUp":
@@ -87,7 +127,7 @@ function useHeroPlane() {
       case "ArrowDown":
         heroInfo.current.y += speed
         isTouchBottomScreenBorder(heroInfo.current) ?
-          heroInfo.current.y = viewHeight - heroInfo.current.height :  
+          heroInfo.current.y = viewHeight - heroInfo.current.height :
           null
         break;
       case "ArrowLeft":
@@ -117,6 +157,42 @@ function useHeroPlane() {
   return {
     heroInfo
   }
+}
+
+function useBullet() {
+  type bulletInfoType = {
+    id: number,
+    x: number,
+    y: number,
+    width: number,
+    height: number,
+    speed: number
+  }
+
+  const bulletList = useRef<bulletInfoType[]>([])
+
+  const addBullet = (info: { x: number, y: number }) => {
+    const uniqueId = Math.floor(Date.now() * Math.random());
+    bulletList.current.push({
+      ...bulletInfo,
+      x: info.x - bulletInfo.width / 2,
+      y: info.y,
+      id: uniqueId
+    })
+  }
+
+  const setBulletList = (index: number, key: string, value: string | number | object) => {
+    const result = bulletList.current.map((item: bulletInfoType, _index: number) => {
+      return (_index === index) ? {
+        ...item,
+        [key]: value
+      } : item
+    })
+
+    bulletList.current = result
+  }
+
+  return { bulletList, setBulletList, addBullet }
 }
 
 function useEnemyPlane() {
