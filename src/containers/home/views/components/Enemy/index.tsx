@@ -1,6 +1,6 @@
 import React from "react"
 import { Container, Sprite } from "@inlet/react-pixi"
-import enemyImg from "../../assets/enemy_0.png"
+import enemyImg from "../../../assets/enemy_0.png"
 interface props {
   x: number,
   y: number

@@ -1,6 +1,6 @@
 import React, { useEffect } from "react";
 import { Container, Sprite } from "@inlet/react-pixi"
-import heroImg from "../../assets/hero.png"
+import heroImg from "../../../assets/hero.png"
 
 interface props {
   x: number,

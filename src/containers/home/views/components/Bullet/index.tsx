@@ -1,8 +1,8 @@
 import { Container, Sprite } from "@inlet/react-pixi"
 import React from "react"
 
-import normalBulletImg from "../../assets/bullet_normal.png"
-import laserBulletImg from "../../assets/bullet_laser.png"
+import normalBulletImg from "../../../assets/bullet_normal.png"
+import laserBulletImg from "../../../assets/bullet_laser.png"
 
 export interface props {
   type: string,

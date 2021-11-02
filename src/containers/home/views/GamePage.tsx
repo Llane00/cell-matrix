@@ -6,7 +6,7 @@ import { Hero, heroInfo as defaultHeroInfo } from "./components/Hero"
 import { Enemy, enemyInfo } from "./components/Enemy";
 import { Bullet, bulletInfo } from "./components/Bullet";
 
-import { hitTestObject, isBeyoundScreen, isTouchBottomScreenBorder, isTouchLeftScreenBorder, isTouchRightScreenBorder, isTouchTopScreenBorder } from "../utils/index"
+import { hitTestObject, isBeyoundScreen, isTouchBottomScreenBorder, isTouchLeftScreenBorder, isTouchRightScreenBorder, isTouchTopScreenBorder } from "../libs/utils"
 import { AppContext } from "../context/appContext";
 import { viewWidth, viewHeight } from "../configs";
 
@@ -24,6 +24,13 @@ const GamePage: React.FC = () => {
 
   const mainGameTick = (delta: number) => {
     update(delta)
+
+    // addBullet({
+    //   type: 'laser',
+    //   x: heroInfo.current.x + heroInfo.current.width / 2,
+    //   y: heroInfo.current.y
+    // })
+    // console.log(delta, bulletList.current.length)
 
     enemyList.current.forEach((enemyInfo, enemyIndex) => {
       //移除超出屏幕的敌人
