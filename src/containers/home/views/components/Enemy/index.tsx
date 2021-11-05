@@ -1,10 +1,6 @@
-import React from "react"
-import { Container, Sprite } from "@inlet/react-pixi"
-import enemyImg from "../../../assets/enemy_0.png"
-interface props {
-  x: number,
-  y: number
-}
+import React, { FC } from 'react'
+import { Container, Sprite } from '@inlet/react-pixi'
+import enemyImg from '../../../assets/enemy_0.png'
 
 export const enemyInfo = {
   width: 102.5 / 2,
@@ -12,8 +8,12 @@ export const enemyInfo = {
   speed: 1
 }
 
-export const Enemy: React.FC<props> = (props) => {
+interface Iprops {
+  x: number,
+  y: number
+}
 
+export const Enemy: FC<Iprops> = (props) => {
   return (
     <Container
       x={props.x}

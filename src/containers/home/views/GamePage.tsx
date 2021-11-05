@@ -1,39 +1,42 @@
-import { Container, useApp } from "@inlet/react-pixi";
-import React, { useContext, useEffect, useRef, useState } from "react"
+import { Container, useApp } from '@inlet/react-pixi'
+import React, { FC, useContext, useEffect, useRef, useState } from 'react'
 
-import Map from "./components/Map"
-import { Hero, heroInfo as defaultHeroInfo } from "./components/Hero"
-import { Enemy, enemyInfo } from "./components/Enemy";
-import { Bullet, bulletInfo } from "./components/Bullet";
+import Map from './components/Map'
+import { Hero, heroInfo as defaultHeroInfo } from './components/Hero'
+import { Enemy, enemyInfo } from './components/Enemy'
+import { Bullet, bulletInfo } from './components/Bullet'
 
-import { hitTestObject, isBeyoundScreen, isTouchBottomScreenBorder, isTouchLeftScreenBorder, isTouchRightScreenBorder, isTouchTopScreenBorder } from "../libs/utils"
-import { AppContext } from "../context/appContext";
-import { viewWidth, viewHeight } from "../configs";
+import { hitTestObject, isBeyoundScreen, isTouchBottomScreenBorder, isTouchLeftScreenBorder, isTouchRightScreenBorder, isTouchTopScreenBorder } from '../libs/utils'
+import { AppContext } from '../context/appContext'
+import { viewWidth, viewHeight } from '../configs'
 
-const GamePage: React.FC = () => {
-  const { ticker } = useApp()
-  ticker.minFPS = 60;
-  ticker.maxFPS = 90;
+const GamePage: FC = () => {
+  const { ticker, renderer } = useApp()
+  ticker.minFPS = 60
+  ticker.maxFPS = 90
+  renderer.view.style.position = 'absolute'
+  renderer.view.style.display = 'block'
+  renderer.resize(window.innerWidth, window.innerHeight)
 
   const update = useState(0)[1]
 
   const { setPageName } = useContext(AppContext)
   const { heroInfo } = useHeroPlane()
-  const { enemyList, setEnemyList } = useEnemyPlane();
-  const { bulletList, setBulletList, addBullet } = useBullet();
+  const { enemyList, setEnemyList } = useEnemyPlane()
+  const { bulletList, setBulletList, addBullet } = useBullet()
 
   const mainGameTick = (delta: number) => {
     update(delta)
 
-    // addBullet({
-    //   type: 'laser',
-    //   x: heroInfo.current.x + heroInfo.current.width / 2,
-    //   y: heroInfo.current.y
-    // })
-    // console.log(delta, bulletList.current.length)
+    addBullet({
+      type: 'laser',
+      x: heroInfo.current.x + heroInfo.current.width / 2,
+      y: heroInfo.current.y
+    })
+    console.log(delta, bulletList.current.length)
 
     enemyList.current.forEach((enemyInfo, enemyIndex) => {
-      //移除超出屏幕的敌人
+      // 移除超出屏幕的敌人
       if (enemyList.current?.length > 0) {
         enemyList.current = enemyList.current.filter((item) => {
           return !isBeyoundScreen(item)
@@ -41,39 +44,39 @@ const GamePage: React.FC = () => {
       }
 
       if (enemyList.current?.length > 0) {
-        //敌人移动
+        // 敌人移动
         setEnemyList(enemyIndex, 'y', enemyInfo.y + enemyInfo.speed)
-        //敌机碰撞检测
+        // 敌机碰撞检测
         if (hitTestObject(enemyInfo, heroInfo.current)) {
-          setPageName("EndPage")
+          setPageName('EndPage')
         }
       }
     })
 
-    //我方子弹移动
+    // 我方子弹移动
     bulletList.current.map((bulletItem, bulletIndex) => {
       setBulletList(bulletIndex, 'y', bulletItem.y - bulletItem.speed)
 
-      //移除超出屏幕的子弹
+      // 移除超出屏幕的子弹
       if (isBeyoundScreen(bulletItem)) {
         bulletList.current.splice(bulletIndex, 1)
       }
     })
 
-    //我方子弹碰撞检测
+    // 我方子弹碰撞检测
     bulletList.current.forEach((bulletInfo, bulletIndex) => {
       enemyList.current.forEach((enemyInfo, enemyIndex) => {
         if (hitTestObject(bulletInfo, enemyInfo)) {
-          //子弹消失
-          bulletList.current.splice(bulletIndex, 1);
-          //敌机消失
-          enemyList.current.splice(enemyIndex, 1);
+          // 子弹消失
+          bulletList.current.splice(bulletIndex, 1)
+          // 敌机消失
+          enemyList.current.splice(enemyIndex, 1)
         }
-      });
-    });
+      })
+    })
   }
 
-  //游戏页渲染
+  // 游戏页渲染
   useEffect(() => {
     ticker.add(mainGameTick)
     return () => {
@@ -97,23 +100,19 @@ const GamePage: React.FC = () => {
       />
       {enemyList.current.map(
         (enemyInfo) =>
-        (
           <Enemy
             x={enemyInfo.x}
             y={enemyInfo.y}
             key={enemyInfo.id} />
-        )
       )}
       {
         bulletList.current?.map(
           (bulletItem) =>
-          (
             <Bullet
               type={bulletItem.type}
               x={bulletItem?.x}
               y={bulletItem?.y}
               key={bulletItem?.id} />
-          )
         )
       }
     </Container>
@@ -121,48 +120,48 @@ const GamePage: React.FC = () => {
 }
 
 function useHeroPlane() {
-  const speed = defaultHeroInfo.speed;
+  const speed = defaultHeroInfo.speed
   const heroInfo = useRef({
     x: viewWidth / 2 - defaultHeroInfo.width / 2,
     y: viewHeight - defaultHeroInfo.height - 20,
     width: defaultHeroInfo.width,
     height: defaultHeroInfo.height,
-  });
+  })
   const handleKeyEvent = (e: KeyboardEvent) => {
     switch (e.code) {
-      case "ArrowUp":
+      case 'ArrowUp':
         heroInfo.current.y -= speed
         isTouchTopScreenBorder(heroInfo.current) ?
           heroInfo.current.y = 0 :
           null
-        break;
-      case "ArrowDown":
+        break
+      case 'ArrowDown':
         heroInfo.current.y += speed
         isTouchBottomScreenBorder(heroInfo.current) ?
           heroInfo.current.y = viewHeight - heroInfo.current.height :
           null
-        break;
-      case "ArrowLeft":
+        break
+      case 'ArrowLeft':
         heroInfo.current.x -= speed
         isTouchLeftScreenBorder(heroInfo.current) ?
           heroInfo.current.x = 0 :
           null
-        break;
-      case "ArrowRight":
+        break
+      case 'ArrowRight':
         heroInfo.current.x += speed
         isTouchRightScreenBorder(heroInfo.current) ?
           heroInfo.current.x = viewWidth - heroInfo.current.width :
           null
       default:
-        break;
+        break
     }
   }
 
   useEffect(() => {
-    window.addEventListener("keydown", handleKeyEvent)
+    window.addEventListener('keydown', handleKeyEvent)
 
     return () => {
-      window.removeEventListener("keydown", handleKeyEvent)
+      window.removeEventListener('keydown', handleKeyEvent)
     }
   }, [])
 
@@ -185,7 +184,7 @@ function useBullet() {
   const bulletList = useRef<bulletInfoType[]>([])
 
   const addBullet = (info: { type: string, x: number, y: number }) => {
-    const uniqueId = Math.floor(Date.now() * Math.random());
+    const uniqueId = Math.floor(Date.now() * Math.random())
     bulletList.current.push({
       ...bulletInfo[info.type],
       x: info.x - bulletInfo[info.type].width / 2,
@@ -197,10 +196,12 @@ function useBullet() {
 
   const setBulletList = (index: number, key: string, value: string | number | object) => {
     const result = bulletList.current.map((item: bulletInfoType, _index: number) => {
-      return (_index === index) ? {
-        ...item,
-        [key]: value
-      } : item
+      return (_index === index)
+        ? {
+            ...item,
+            [key]: value
+          }
+        : item
     })
 
     bulletList.current = result
@@ -219,22 +220,24 @@ function useEnemyPlane() {
     speed: number
   }
 
-  //敌方飞机
+  // 敌方飞机
   const enemyList = useRef<enemyInfoType[]>([
     {
       ...enemyInfo,
       id: 1,
       x: 200,
-      y: 50,
-    },
+      y: 50
+    }
   ])
 
   const setEnemyList = (index: number, key: string, value: string | number | object) => {
     const result = enemyList.current.map((item: enemyInfoType, _index: number) => {
-      return (_index === index) ? {
-        ...item,
-        [key]: value
-      } : item
+      return (_index === index)
+        ? {
+            ...item,
+            [key]: value
+          }
+        : item
     })
 
     enemyList.current = result

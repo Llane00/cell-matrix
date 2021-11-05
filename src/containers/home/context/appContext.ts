@@ -1,15 +1,15 @@
-import React from "react";
+import React from 'react'
 
-export interface IappContext {
+export interface IAppContext {
   pageName: string,
   setPageName(pageName: string): void
 }
 
-//初始化 context
-const globalState: IappContext = {
+// 初始化 context
+const globalState: IAppContext = {
   pageName: '',
   setPageName: () => { }
 }
 
-//创建app全局上下文
-export const AppContext = React.createContext<IappContext>(globalState);
+// 创建app全局上下文
+export const AppContext = React.createContext<IAppContext>(globalState)

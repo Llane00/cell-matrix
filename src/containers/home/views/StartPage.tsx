@@ -1,14 +1,14 @@
-import React, { useContext } from "react"
-import { Container, Sprite } from "@inlet/react-pixi"
-import { AppContext } from "../context/appContext"
+import React, { FC, useContext } from 'react'
+import { Container, Sprite } from '@inlet/react-pixi'
+import { AppContext } from '../context/appContext'
 
-import StartImg from "../assets/start.png"
+import StartImg from '../assets/start.png'
 
-const StartPage: React.FC = () => {
+const StartPage: FC = () => {
   const { setPageName } = useContext(AppContext)
 
   const startGameClickHandle = () => {
-    setPageName('GamePage');
+    setPageName('GamePage')
   }
 
   return (

@@ -1,8 +1,8 @@
-//react-pixi使用context时有问题 https://github.com/inlet/react-pixi/issues/281
+// react-pixi使用context时有问题 https://github.com/inlet/react-pixi/issues/281
 
-import React from "react"
+import React from 'react'
 
-export default function ContextBridge<T>(props: {
+export default function ContextBridge<T> (props: {
   children: React.ReactNode
   Context: React.Context<T>
   render: (children: React.ReactNode) => JSX.Element

@@ -1,31 +1,31 @@
-import { Container, Sprite } from "@inlet/react-pixi"
-import React from "react"
+import { Container, Sprite } from '@inlet/react-pixi'
+import React, { FC } from 'react'
 
-import normalBulletImg from "../../../assets/bullet_normal.png"
-import laserBulletImg from "../../../assets/bullet_laser.png"
-
-export interface props {
-  type: string,
-  x: number,
-  y: number,
-}
+import normalBulletImg from '../../../assets/bullet_normal.png'
+import laserBulletImg from '../../../assets/bullet_laser.png'
 
 export const bulletInfo = {
-  "normal": {
+  normal: {
     width: 6,
     height: 14,
     speed: 10,
     img: normalBulletImg
   },
-  "laser": {
+  laser: {
     width: 14.5,
     height: 26.5,
     speed: 10,
     img: laserBulletImg
-  },
+  }
 }
 
-export const Bullet: React.FC<props> = (props) => {
+export interface Iprops {
+  type: string,
+  x: number,
+  y: number,
+}
+
+export const Bullet: FC<Iprops> = (props) => {
   return (
     <Container
       x={props.x}
@@ -41,5 +41,5 @@ export const Bullet: React.FC<props> = (props) => {
 }
 
 Bullet.defaultProps = {
-  type: "normal"
+  type: 'normal'
 }

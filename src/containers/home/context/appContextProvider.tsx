@@ -1,10 +1,10 @@
-import React from "react";
-import { AppContext, IappContext } from "./appContext"
+import React from 'react'
+import { AppContext, IAppContext } from './appContext'
 
 // action type
 export type ACTIONTYPE = { type: 'setPageName', payload: string }
 
-const AppProvider = ({ children }: React.Props<{ value: IappContext }>) => {
+const AppProvider = ({ children }: React.Props<{ value: IAppContext }>) => {
   // set操作抽离出来
   const setPageName = (newPageName: string) => {
     changeAppState((prevState) => ({
@@ -13,8 +13,8 @@ const AppProvider = ({ children }: React.Props<{ value: IappContext }>) => {
     }))
   }
   
-  const initAppStore: IappContext = {
-    pageName: "StartPage",
+  const initAppStore: IAppContext = {
+    pageName: 'StartPage',
     setPageName: setPageName
   }
 
@@ -24,7 +24,7 @@ const AppProvider = ({ children }: React.Props<{ value: IappContext }>) => {
     <AppContext.Provider value={ appstate }>
       {children}
     </AppContext.Provider>
-  );
+  )
 }
 
 export default AppProvider
