@@ -1,35 +1,18 @@
-import { Container, Sprite, useApp } from '@inlet/react-pixi'
+import { Container, TilingSprite, useApp } from '@inlet/react-pixi'
 import React, { FC, useEffect, useState } from 'react'
 
 import { viewWidth, viewHeight, backgroundSpeed } from '../../../configs/index'
-import Background from '../../../assets/background_1.png'
+import Background from '../../../assets/background_0.png'
 
 type Callback = () => void
 const Map: FC = () => {
   const speed = backgroundSpeed
   const [mapY1, setMapY1] = useState(0)
-  const [mapY2, setMapY2] = useState(-viewHeight)
-
   const { ticker } = useApp()
 
   useEffect((): void | Callback => {
     const tick = (delta: number) => {
       setMapY1(i => i + speed)
-      setMapY1(i => {
-        if (i >= viewHeight - speed) {
-          return -viewHeight
-        } else {
-          return i
-        }
-      })
-      setMapY2(i => i + speed)
-      setMapY2(i => {
-        if (i >= viewHeight - speed) {
-          return -viewHeight
-        } else {
-          return i
-        }
-      })
     }
     ticker.add(tick)
     return () => ticker.remove(tick)
@@ -37,16 +20,13 @@ const Map: FC = () => {
 
   return (
     <Container>
-      <Sprite
+      <TilingSprite
         x={0}
-        y={mapY1}
-        width={viewWidth}
-        height={viewHeight}
-        image={Background}
-      />
-      <Sprite
-        x={0}
-        y={mapY2}
+        y={0}
+        tilePosition={{
+          x: 0,
+          y: mapY1
+        }}
         width={viewWidth}
         height={viewHeight}
         image={Background}
